@@ -12,7 +12,6 @@
   padding: 40px;
   background-color: var(--bs-body-bg);
   color: var(--bs-body-color);
-  border: 1px solid var(--bs-border-color) !important;
   border-radius: 15px;
 }
 
@@ -39,7 +38,6 @@
   margin-bottom: 18px;
   padding: 11px 13px !important;
   border-radius: 8px !important;
-  border: 1px solid gray;
   font-size: 16px;
 }
 

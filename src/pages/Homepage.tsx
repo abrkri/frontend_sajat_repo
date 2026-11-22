@@ -1,4 +1,5 @@
 import { Button } from "react-bootstrap";
+import { GeoAlt, Image, ClipboardCheck } from "react-bootstrap-icons";
 import "../styles/hpstyle.css";
 
 const Homepage = () => {
@@ -44,7 +45,9 @@ const Homepage = () => {
 
         <div className="feature-grid">
           <div className="feature-card">
-            <div className="feature-icon location-icon">⌖</div>
+            <div className="feature-icon location-icon">
+              <GeoAlt size={27} />
+            </div>
             <h3>Pontos helyszín</h3>
             <p>
               Add meg a probléma pontos helyét, hogy az illetékesek könnyedén
@@ -53,7 +56,9 @@ const Homepage = () => {
           </div>
 
           <div className="feature-card">
-            <div className="feature-icon photo-icon">▧</div>
+            <div className="feature-icon photo-icon">
+              <Image size={27} />
+            </div>
             <h3>Fényképes bejelentés</h3>
             <p>
               Csatolj fényképeket és részletes leírást, hogy egyértelműen
@@ -62,7 +67,9 @@ const Homepage = () => {
           </div>
 
           <div className="feature-card">
-            <div className="feature-icon tracking-icon">✓</div>
+            <div className="feature-icon tracking-icon">
+              <ClipboardCheck size={27} />
+            </div>
             <h3>Állapotkövetés</h3>
             <p>
               Kövesd nyomon bejelentéseid állapotát, és nézd meg, hol tart az
