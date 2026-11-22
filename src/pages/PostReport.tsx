@@ -1,10 +1,34 @@
 import { Button, Form, FormControl } from "react-bootstrap";
 import "../styles/postrep.css";
 import { toast } from "react-toastify";
+import type { UserReport } from "../types/UserReport";
+import apiClient from "../api/apiClient";
+import { useNavigate } from "react-router-dom";
 
 const PostReport = () => {
+  const navigate = useNavigate();
   const submitReport = () => {
-    toast.success("A bejelentésed sikeresen elküldve!");
+    var formData = new FormData(
+      document.getElementById("report-form")! as HTMLFormElement,
+    );
+    const newReport = {
+      ...Object.fromEntries(formData.entries()),
+      house_number: Number(formData.get("house_number")),
+      user_id: 1,
+    } as UserReport;
+
+    apiClient
+      .post("/reports", newReport)
+      .then(() => {
+        toast.success("A bejelentésed sikeresen elküldve!");
+        navigate("/reports");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Hiba történt a bejelentés elküldése közben!", {
+          autoClose: false,
+        });
+      });
   };
   return (
     <div className="report-page">
@@ -17,6 +41,7 @@ const PostReport = () => {
         </p>
 
         <Form
+          id="report-form"
           onSubmit={(e) => {
             e.preventDefault();
             submitReport();
@@ -24,8 +49,9 @@ const PostReport = () => {
         >
           <label>Kép</label>
           <FormControl
+            required
             name="img_path"
-            type="file"
+            type="string"
             accept="image/*"
             className="report-input"
           />
@@ -33,8 +59,17 @@ const PostReport = () => {
           <label>Cím</label>
           <FormControl name="title" type="text" className="report-input" />
 
+          <label>Kategória</label>
+          <FormControl
+            required
+            name="category"
+            type="text"
+            className="report-input"
+          />
+
           <label>Leírás</label>
           <FormControl
+            required
             name="description"
             as="textarea"
             rows={5}
@@ -46,12 +81,17 @@ const PostReport = () => {
 
           <label>Házszám</label>
           <FormControl
+            required
             name="house_number"
-            type="text"
+            type="number"
             className="report-input"
           />
 
-          <Button variant="primary" type="submit" className="report-button">
+          <Button
+            variant="primary"
+            type="submit"
+            className="post-report-submit"
+          >
             Beküldés
           </Button>
         </Form>

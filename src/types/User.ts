@@ -3,6 +3,6 @@ export type User = {
   name: string;
   email: string;
   password: string;
-  role: string;
-  created_at: Date;
+  role?: number;
+  created_at?: Date;
 };

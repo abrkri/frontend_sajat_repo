@@ -1,11 +1,11 @@
 import axios from "axios";
 
-export const BACKEND_URL = "http://localhost:8080/api";
+export const BACKEND_URL = "http://localhost:8000/api";
 
 const apiClient = axios.create({
   baseURL: BACKEND_URL,
   headers: {
-    "Content-Type": "applications/json",
+    "Content-Type": "application/json",
   },
 });
 

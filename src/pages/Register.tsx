@@ -1,13 +1,42 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button, Form, FormControl } from "react-bootstrap";
 import { toast } from "react-toastify";
+import type { User } from "../types/User";
+import apiClient from "../api/apiClient";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const userNameRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+  const [datas, setDatas] = useState<User>({
+    name: "",
+    email: "",
+    password: "",
+  });
   const passwordAgainRef = useRef<HTMLInputElement>(null);
 
+  const registerUser = () => {
+    {
+      datas.name == "" ||
+      datas.email == "" ||
+      datas.password == "" ||
+      passwordAgainRef.current?.value == ""
+        ? toast.error("Kérlek töltsd ki az összes mezőt!")
+        : datas.password == passwordAgainRef.current!.value
+          ? apiClient
+              .post("/register", datas)
+              .then(() => {
+                navigate("/reports");
+              })
+              .catch((error) => {
+                console.log(datas);
+                console.log(error);
+                toast.error(
+                  "Hiba történt a regisztráció során: " + error.message,
+                );
+              })
+          : toast.error("A jelszavak nem egyeznek!");
+    }
+  };
   return (
     <>
       <div className="auth-page">
@@ -17,28 +46,13 @@ const Register = () => {
             Hozz létre egy fiókot, hogy segíthess a város tisztaságának
             fenntartásáért!
           </p>
-          <Form
-            onSubmit={(e) => {
-              e.preventDefault();
-              {
-                userNameRef.current?.value == "" ||
-                emailRef.current?.value == "" ||
-                passwordRef.current?.value == "" ||
-                passwordAgainRef.current?.value == ""
-                  ? toast.error("Kérlek töltsd ki az összes mezőt!")
-                  : passwordRef.current!.value ==
-                      passwordAgainRef.current!.value
-                    ? toast.success("Sikeres regisztráció!")
-                    : toast.error("A jelszavak nem egyeznek!");
-              }
-            }}
-          >
+          <Form onSubmit={(e) => e.preventDefault()}>
             <label>Felhasználónév</label>
             <FormControl
               className="auth-input"
               name="username"
               placeholder="tesztelek"
-              ref={userNameRef}
+              onChange={(e) => setDatas({ ...datas, name: e.target.value })}
               type="text"
             />
             <label>E-mail cím</label>
@@ -46,7 +60,7 @@ const Register = () => {
               className="auth-input"
               name="email"
               placeholder="tesztelek@email.com"
-              ref={emailRef}
+              onChange={(e) => setDatas({ ...datas, email: e.target.value })}
               type="text"
             />
             <label>Jelszó</label>
@@ -54,7 +68,7 @@ const Register = () => {
               className="auth-input"
               name="password"
               placeholder="jelszó"
-              ref={passwordRef}
+              onChange={(e) => setDatas({ ...datas, password: e.target.value })}
               type="password"
             />
             <label>Jelszó újra</label>
@@ -65,7 +79,12 @@ const Register = () => {
               ref={passwordAgainRef}
               type="password"
             />
-            <Button className="auth-button" variant="primary" type="submit">
+            <Button
+              className="auth-button"
+              variant="primary"
+              onClick={registerUser}
+              type="submit"
+            >
               Regisztráció
             </Button>
           </Form>

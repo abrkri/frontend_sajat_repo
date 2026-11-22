@@ -9,9 +9,9 @@ import "./styles/theme.css";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Reports from "./pages/Reports";
 import NotFound from "./pages/NotFound";
 import PostReport from "./pages/PostReport";
+import Reports from "./pages/Reports";
 
 const theme = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -33,8 +33,8 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/reports" element={<Reports />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/reports" element={<Reports />} />
         <Route path="/register" element={<Register />} />
         <Route path="/post-report" element={<PostReport />} />
         <Route path="*" element={<NotFound />} />
